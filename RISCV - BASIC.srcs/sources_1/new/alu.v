@@ -25,6 +25,8 @@ module alu(
         input [31:0] a,
         input [31:0] b,
         input [3:0] alu_control, 
+        input clk,
+        input rst,
         output reg [31:0] alu_result,
         output reg zero
     );
@@ -34,20 +36,27 @@ module alu(
     
     
     
-    always @(*) begin
-        casex(alu_control)
-            4'b0000 : alu_result = a + b;
-            4'b0001 : alu_result = a - b;
-            4'b0010 : alu_result = a & b;
-            4'b0011 : alu_result = a | b;
-            4'b0100 : alu_result = a ^ b;
-            4'b0101 : alu_result = ($signed(a) < $signed(b)) ? 32'd1 : 32'd0;
-            4'b0110 : alu_result = (a < b) ? 32'd1 : 32'd0;
-            4'b0111 : alu_result = a << b[4:0];
-            4'b1000 : alu_result = a >> b[4:0];
-            4'b1001 : alu_result = $signed(a) >>> b[4:0];
-            4'b1010 : alu_result = b;
-            
-        endcase
+    always @(posedge clk or posedge rst) begin
+        if(rst) alu_result = 4'b0000;
+        else begin
+            casex(alu_control)
+                4'b0000 : alu_result = a + b;
+                4'b0001 : alu_result = a - b;
+                4'b0010 : alu_result = a & b;
+                4'b0011 : alu_result = a | b;
+                4'b0100 : alu_result = a ^ b;
+                4'b0101 : alu_result = ($signed(a) < $signed(b)) ? 32'd1 : 32'd0;
+                4'b0110 : alu_result = (a < b) ? 32'd1 : 32'd0;
+                4'b0111 : alu_result = a << b[4:0];
+                4'b1000 : alu_result = a >> b[4:0];
+                4'b1001 : alu_result = $signed(a) >>> b[4:0];
+                4'b1010 : alu_result = b;
+                default : alu_result = 32'd0;
+            endcase
+        end
+        
+        if(~alu_result) zero = 1'b1;
+        else zero = 1'b0;
+        
     end
 endmodule
