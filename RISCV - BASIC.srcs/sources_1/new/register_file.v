@@ -21,9 +21,9 @@
 
 
 module register_file(
-        input [5:0] rs1,
-        input [5:0] rs2,
-        input [5:0] rd,
+        input [4:0] rs1,
+        input [4:0] rs2,
+        input [4:0] rd,
         input clk,
         input rst,
         input regwrite,
@@ -34,6 +34,8 @@ module register_file(
     
     reg [31:0] Registers [31:0];  //32 32bit Registers
     integer k;
+
+    // asynchronous read whereas synchronous write ( STANDARD riscv architecture)
     
     always @(posedge clk or posedge rst) begin
         if(rst) begin
@@ -42,7 +44,7 @@ module register_file(
             end      
         end
         
-        else if (regwrite) begin
+        else if (regwrite && rd != 0) begin   // X0 is always wired to 0
             Registers[rd] <= write_data;
         end
     end   
