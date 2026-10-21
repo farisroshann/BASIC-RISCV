@@ -23,8 +23,8 @@
 module ALU_Control_Unit(
     input [1:0] ALUOp,
     input [6:0] funct7,
-    input [2:0] funct3
-    output [3:0] alu_control
+    input [2:0] funct3,
+    output  reg [3:0] alu_control
     );
 
     always @(*) begin
