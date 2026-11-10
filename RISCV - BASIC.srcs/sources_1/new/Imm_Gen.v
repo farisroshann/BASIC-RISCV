@@ -21,7 +21,7 @@
 
 
 module Imm_Gen(
-    input [32:0] instruction,
+    input [31:0] instruction,
     output reg [31:0] ImmOut    // NEEDS TO FIX
     );
 
@@ -32,7 +32,7 @@ module Imm_Gen(
             7'b0100011 : ImmOut = {{20{instruction[31]}} , instruction[31:25] , instruction[11:7]};  // S TYPE
             7'b1100011 : ImmOut = {{19{instruction[31]}} , instruction[31] , instruction[7] , instruction[30:25] , instruction[11:8] , 1'b0};  
             // J TYPE AND U TYPE INSTRUCTIONS ADD LATER ... LOOK INTO THEORY
-                 
+            default: ImmOut = 32'b00;      
         endcase
     end
     

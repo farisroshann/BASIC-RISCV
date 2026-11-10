@@ -31,7 +31,7 @@ module ALU_Control_Unit(
         case(ALUOp)
         2'b00: alu_control = 4'b0000;
         2'b01: alu_control = 4'b0001;
-        2'b01: casex({funct7, funct3})
+        2'b10: casex({funct7, funct3})
             10'b0000000000: alu_control = 4'b0000; // GO THROUGH TABLE IN TAB
             10'b0100000000: alu_control = 4'b0001;
             10'b0000000111: alu_control = 4'b0010;
